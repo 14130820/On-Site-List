@@ -1,0 +1,42 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    d1p1:Ignorable="d" 
+    WindowStartupLocation="CenterOwner"
+    x:Class="DustSwier.OnSiteList.Views.InfoView"
+    Title="Information" Height="650" Width="700">
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock FontSize="28" Text="Information" FontWeight="Bold" Margin="20, 5" VerticalAlignment="Center"/>
+        <Button Grid.ColumnSpan="2" Content="Exit" FontSize="28" Width="100" HorizontalAlignment="Right" Margin="20, 5" Click="Exit_Click"/>
+
+        <ScrollViewer Grid.Row="1"  >
+            <TextBlock FontSize="20" TextWrapping="Wrap" Padding="20, 10">
+                <Bold>How to use this program</Bold><LineBreak/>
+                <LineBreak/>
+                This program consists of two lists: The <Bold>traffic logs</Bold> and the <Bold>guest logs.</Bold><LineBreak/>
+                The <Bold>traffic log</Bold> displays all the logged incoming and outgoing traffic. When you add a log, it automatically updates the <Bold>guest log.</Bold><LineBreak/>
+                The <Bold>guest log</Bold> is a list of rooms. It shows who belongs to that room, if they have H2S, and if they are currently in or out of camp.<LineBreak/>
+                <LineBreak/>
+                Whenever someone comes in or out, you type their room number in the text box and click IN or OUT. (Alternatively you can click 'Check Out' to add the log and reset their room.)<LineBreak/>
+                This will create a log entry showing the time, H2S certificate, room and status of IN or OUT. <LineBreak/>
+                <Bold>Note:</Bold> If the room has a name set in the <Bold>guest log</Bold>, it will automatically add the name to the new <Bold>traffic log</Bold> entry.<LineBreak/>
+                Otherwise, click on the name box and type in a new name for that room. <LineBreak/>
+                <Bold>Note:</Bold> You can edit the room, status, and name whenever you want.<LineBreak/><LineBreak/>
+                <Bold>Note: To add a room on the second floor, use a dash. Example: B2-1.</Bold> <LineBreak/>
+                <LineBreak/>
+                You can also add entries by selecting IN or OUT without adding a name for visitors and check-ins. They can later be changed to the proper rooms or removed.
+            </TextBlock>
+        </ScrollViewer>
+    </Grid>
+</Window>

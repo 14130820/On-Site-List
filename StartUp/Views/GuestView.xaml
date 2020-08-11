@@ -1,0 +1,64 @@
+﻿<Grid
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:DustSwier.OnSiteList.Views" 
+    x:Class="DustSwier.OnSiteList.Views.GuestView"
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    d1p1:Ignorable="d" d:DesignHeight="768" d:DesignWidth="680"
+    d:DataContext="{Binding GuestViewModel, Source={StaticResource Locator}}"
+    DataContext="{Binding GuestViewModel, Source={StaticResource Locator}}" >
+
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Margin="10,5,0,5" Text="Guest Logs" FontSize="26" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" />
+    
+    <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" FlowDirection="RightToLeft" >
+        <Button Grid.Column="1" Padding="10, 0" Margin="5" FontSize="26" Content="Checkins" ToolTip="Set the room Checkins." Command="{Binding OpenCheckinsCommand, Mode=OneWay, Source={StaticResource Locator}}" />
+        <Button Padding="10, 0" Margin="5" FontSize="26" Content="Activity Search" Command="{Binding OpenDateSearchCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
+        <Button Padding="10, 0" Margin="5" FontSize="26" Content="Manifests" Command="{Binding OpenManifestCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
+    </StackPanel>
+
+    <DataGrid Grid.ColumnSpan="2" Grid.Row="1" x:Name="dataGrid" AutoGenerateColumns="false" ItemsSource="{Binding Logs}" FontSize="20"
+              CanUserAddRows="False" SelectionUnit="CellOrRowHeader" CanUserDeleteRows="False" IsTextSearchEnabled="True" SelectedItem="{Binding SelectedItem}">
+
+        <DataGrid.Columns>
+            <DataGridTemplateColumn Header="Logs"  Width="0.3*" >
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding ActivityLogs.Count}" Command="{Binding GuestViewModel.ShowActivityCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Mode=OneWay}"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            
+            <DataGridTextColumn Width="1*" Header="Name" Binding="{Binding CurrentLog.Name}" />
+
+            <DataGridTemplateColumn Width="46" Header="H2S" SortMemberPath="HasH2S" CanUserSort="True">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding CurrentLog.HasH2S, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTextColumn Width="0.2*" Header="Room" Binding="{Binding RoomDisplay}" IsReadOnly="True"/>
+            
+            <DataGridTemplateColumn Width="0.42*" Header="Status" ClipboardContentBinding="{Binding CurrentLog.Status}" SortMemberPath="CurrentStatus" CanUserSort="True">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate >
+                        <ComboBox ItemsSource="{Binding StringStatus, Source={StaticResource StatusTypeConverter}}" SelectedIndex="{Binding CurrentLog.Status, Mode=TwoWay, Converter={StaticResource StatusTypeConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</Grid>

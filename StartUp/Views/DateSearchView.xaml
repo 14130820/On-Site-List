@@ -1,0 +1,82 @@
+﻿<Grid
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    d1p1:Ignorable="d" 
+    d:DesignHeight="768" d:DesignWidth="680"
+    d:DataContext="{Binding DateSearchViewModel, Source={StaticResource Locator}}"
+    DataContext="{Binding DateSearchViewModel, Source={StaticResource Locator}}"
+    x:Class="DustSwier.OnSiteList.Views.DateSearchView" >
+
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="0.75*"/>
+        <ColumnDefinition Width="4.5*"/>
+        <ColumnDefinition Width="1*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.ColumnSpan="2" FontSize="26" Text="Activity logs via date" FontWeight="Bold" Margin="5" VerticalAlignment="Center"/>
+    <Button Grid.Column="4" Content="Back" FontSize="26" Margin="5" Command="{Binding OpenGuestCommand, Mode=OneWay, Source={StaticResource Locator}}" />
+
+    <TextBlock Grid.Row="1" Margin="5" Text="From:" FontSize="26" HorizontalAlignment="Right" />
+    <xctk:DateTimePicker Grid.Row="1" FontSize="26" Margin="5" Grid.Column="1" Kind="Local" Value="{Binding FromDate, UpdateSourceTrigger=PropertyChanged}" />
+
+    <TextBlock Grid.Row="2" Margin="5" Text="To:" FontSize="26" HorizontalAlignment="Right"/>
+    <xctk:DateTimePicker Margin="5" FontSize="26" Grid.Row="2" Grid.Column="1" Kind="Local" Value="{Binding ToDate, UpdateSourceTrigger=PropertyChanged}" />
+
+    <Button Margin="5" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" FontSize="26" Content="Search" Command="{Binding SearchCommand}"/>
+
+    <DataGrid Grid.Row="3" Grid.ColumnSpan="3" AutoGenerateColumns="False" ItemsSource="{Binding Logs}" SelectionUnit="Cell"
+                  FontSize="20" CanUserAddRows="False" CanUserDeleteRows="True" >
+
+        <DataGrid.Columns>
+            <DataGridTemplateColumn Width="43" Header="Del" >
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Content="X"  ToolTip="Delete This Manifest" Foreground="#FFFF1212" Command="{Binding DateSearchViewModel.DeleteCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Mode=OneWay}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTextColumn Width="0.8*" IsReadOnly="True" Header="Time">
+                <DataGridTextColumn.Binding>
+                    <Binding Path="Time" StringFormat="yyyy MMM dd HH:mm"/>
+                </DataGridTextColumn.Binding>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn Width="1*" Header="Name" Binding="{Binding Name}" />
+
+            <DataGridTemplateColumn Width="46" Header="H2S" ClipboardContentBinding="{Binding HasH2S}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding HasH2S, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTextColumn Width=".2*" MinWidth="60" Header="Room" Binding="{Binding Room, Converter={StaticResource RoomConverter}}" />
+
+            <DataGridTemplateColumn Width=".42*" MinWidth="65" Header="Status" ClipboardContentBinding="{Binding Status}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ComboBox ItemsSource="{Binding StringStatus, Source={StaticResource StatusTypeConverter}}" SelectedIndex="{Binding Status, Mode=TwoWay, Converter={StaticResource StatusTypeConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</Grid>

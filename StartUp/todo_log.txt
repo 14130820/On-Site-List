@@ -1,0 +1,7 @@
+﻿make search
+undo/redo
+learn Regular expressions for the room input parser
+make everything editable except times.
+
+only save when hitting save on manifest
+delete log did not save
